@@ -30,7 +30,7 @@ void main(void) {
     // Enable the external VCC output
     ext_power = device_get_binding("EXT_POWER");
     if (ext_power != NULL) {
-        const struct ext_power_api *ext_power_api = ext_power->driver_api;
+        const struct ext_power_api *ext_power_api = ext_power->api;
         ext_power_api->enable(ext_power);
     }
 

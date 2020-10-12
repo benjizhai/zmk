@@ -32,7 +32,7 @@ static int mo_keymap_binding_released(struct zmk_behavior_binding *binding,
     return zmk_keymap_layer_deactivate(binding->param1);
 }
 
-static const struct behavior_driver_api behavior_mo_driver_api = {
+static const struct behavior_api behavior_mo_api = {
     .binding_pressed = mo_keymap_binding_pressed, .binding_released = mo_keymap_binding_released};
 
 static const struct behavior_mo_config behavior_mo_config = {};
@@ -41,4 +41,4 @@ static struct behavior_mo_data behavior_mo_data;
 
 DEVICE_AND_API_INIT(behavior_mo, DT_INST_LABEL(0), behavior_mo_init, &behavior_mo_data,
                     &behavior_mo_config, APPLICATION, CONFIG_KERNEL_INIT_PRIORITY_DEFAULT,
-                    &behavior_mo_driver_api);
+                    &behavior_mo_api);

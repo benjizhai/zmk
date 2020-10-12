@@ -30,7 +30,7 @@ static int on_keymap_binding_released(struct zmk_behavior_binding *binding,
     return 1;
 }
 
-static const struct behavior_driver_api behavior_transparent_driver_api = {
+static const struct behavior_api behavior_transparent_api = {
     .binding_pressed = on_keymap_binding_pressed,
     .binding_released = on_keymap_binding_released,
 };
@@ -41,4 +41,4 @@ static struct behavior_transparent_data behavior_transparent_data;
 
 DEVICE_AND_API_INIT(behavior_transparent, DT_INST_LABEL(0), behavior_transparent_init,
                     &behavior_transparent_data, &behavior_transparent_config, APPLICATION,
-                    CONFIG_KERNEL_INIT_PRIORITY_DEFAULT, &behavior_transparent_driver_api);
+                    CONFIG_KERNEL_INIT_PRIORITY_DEFAULT, &behavior_transparent_api);

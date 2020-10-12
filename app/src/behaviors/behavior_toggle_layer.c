@@ -32,7 +32,7 @@ static int tog_keymap_binding_released(struct zmk_behavior_binding *binding,
     return 0;
 }
 
-static const struct behavior_driver_api behavior_tog_driver_api = {
+static const struct behavior_api behavior_tog_api = {
     .binding_pressed = tog_keymap_binding_pressed,
     .binding_released = tog_keymap_binding_released,
 };
@@ -43,4 +43,4 @@ static struct behavior_tog_data behavior_tog_data;
 
 DEVICE_AND_API_INIT(behavior_tog, DT_INST_LABEL(0), behavior_tog_init, &behavior_tog_data,
                     &behavior_tog_config, APPLICATION, CONFIG_KERNEL_INIT_PRIORITY_DEFAULT,
-                    &behavior_tog_driver_api);
+                    &behavior_tog_api);

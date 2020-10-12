@@ -42,10 +42,10 @@ static int on_keymap_binding_released(struct zmk_behavior_binding *binding,
     return 0;
 }
 
-static const struct behavior_driver_api behavior_bt_driver_api = {
+static const struct behavior_api behavior_bt_api = {
     .binding_pressed = on_keymap_binding_pressed,
     .binding_released = on_keymap_binding_released,
 };
 
 DEVICE_AND_API_INIT(behavior_bt, DT_INST_LABEL(0), behavior_bt_init, NULL, NULL, APPLICATION,
-                    CONFIG_KERNEL_INIT_PRIORITY_DEFAULT, &behavior_bt_driver_api);
+                    CONFIG_KERNEL_INIT_PRIORITY_DEFAULT, &behavior_bt_api);

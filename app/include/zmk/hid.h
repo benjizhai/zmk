@@ -17,7 +17,7 @@
 
 #define ZMK_HID_MAX_KEYCODE GUI
 
-static const u8_t zmk_hid_report_desc[] = {
+static const uint8_t zmk_hid_report_desc[] = {
     /* USAGE_PAGE (Generic Desktop) */
     HID_GI_USAGE_PAGE,
     USAGE_GEN_DESKTOP,
@@ -135,27 +135,27 @@ static const u8_t zmk_hid_report_desc[] = {
 
 // struct zmk_hid_boot_report
 // {
-//     u8_t modifiers;
-//     u8_t _unused;
-//     u8_t keys[6];
+//     uint8_t modifiers;
+//     uint8_t _unused;
+//     uint8_t keys[6];
 // } __packed;
 
 struct zmk_hid_keypad_report_body {
     zmk_mod_flags modifiers;
-    u8_t keys[13];
+    uint8_t keys[13];
 } __packed;
 
 struct zmk_hid_keypad_report {
-    u8_t report_id;
+    uint8_t report_id;
     struct zmk_hid_keypad_report_body body;
 } __packed;
 
 struct zmk_hid_consumer_report_body {
-    u8_t keys[6];
+    uint8_t keys[6];
 } __packed;
 
 struct zmk_hid_consumer_report {
-    u8_t report_id;
+    uint8_t report_id;
     struct zmk_hid_consumer_report_body body;
 } __packed;
 

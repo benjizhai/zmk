@@ -30,7 +30,7 @@ static int on_keymap_binding_released(struct zmk_behavior_binding *binding,
     return 0;
 }
 
-static const struct behavior_driver_api behavior_none_driver_api = {
+static const struct behavior_api behavior_none_api = {
     .binding_pressed = on_keymap_binding_pressed,
     .binding_released = on_keymap_binding_released,
 };
@@ -41,4 +41,4 @@ static struct behavior_none_data behavior_none_data;
 
 DEVICE_AND_API_INIT(behavior_none, DT_INST_LABEL(0), behavior_none_init, &behavior_none_data,
                     &behavior_none_config, APPLICATION, CONFIG_KERNEL_INIT_PRIORITY_DEFAULT,
-                    &behavior_none_driver_api);
+                    &behavior_none_api);

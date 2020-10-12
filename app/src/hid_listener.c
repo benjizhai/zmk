@@ -15,7 +15,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/hid.h>
 #include <zmk/endpoints.h>
 
-static int hid_listener_keycode_pressed(u8_t usage_page, u32_t keycode) {
+static int hid_listener_keycode_pressed(uint8_t usage_page, uint32_t keycode) {
     int err;
     LOG_DBG("usage_page 0x%02X keycode 0x%02X", usage_page, keycode);
 
@@ -39,7 +39,7 @@ static int hid_listener_keycode_pressed(u8_t usage_page, u32_t keycode) {
     return zmk_endpoints_send_report(usage_page);
 }
 
-static int hid_listener_keycode_released(u8_t usage_page, u32_t keycode) {
+static int hid_listener_keycode_released(uint8_t usage_page, uint32_t keycode) {
     int err;
     LOG_DBG("usage_page 0x%02X keycode 0x%02X", usage_page, keycode);
 

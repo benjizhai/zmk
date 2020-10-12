@@ -17,7 +17,7 @@
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 struct behavior_sensor_rotate_key_press_config {
-    u8_t usage_page;
+    uint8_t usage_page;
 };
 struct behavior_sensor_rotate_key_press_data {};
 
@@ -26,10 +26,10 @@ static int behavior_sensor_rotate_key_press_init(struct device *dev) { return 0;
 static int on_sensor_binding_triggered(struct zmk_behavior_binding *binding,
                                        struct device *sensor) {
     struct device *dev = device_get_binding(binding->behavior_dev);
-    const struct behavior_sensor_rotate_key_press_config *cfg = dev->config_info;
+    const struct behavior_sensor_rotate_key_press_config *cfg = dev->config;
     struct sensor_value value;
     int err;
-    u32_t keycode;
+    uint32_t keycode;
     struct keycode_state_changed *ev;
     LOG_DBG("usage_page 0x%02X inc keycode 0x%02X dec keycode 0x%02X", cfg->usage_page,
             binding->param1, binding->param2);
@@ -70,7 +70,7 @@ static int on_sensor_binding_triggered(struct zmk_behavior_binding *binding,
     return ZMK_EVENT_RAISE(ev);
 }
 
-static const struct behavior_driver_api behavior_sensor_rotate_key_press_driver_api = {
+static const struct behavior_api behavior_sensor_rotate_key_press_api = {
     .sensor_binding_triggered = on_sensor_binding_triggered};
 
 #define KP_INST(n)                                                                                 \
@@ -81,6 +81,6 @@ static const struct behavior_driver_api behavior_sensor_rotate_key_press_driver_
         behavior_sensor_rotate_key_press_##n, DT_INST_LABEL(n),                                    \
         behavior_sensor_rotate_key_press_init, &behavior_sensor_rotate_key_press_data_##n,         \
         &behavior_sensor_rotate_key_press_config_##n, APPLICATION,                                 \
-        CONFIG_KERNEL_INIT_PRIORITY_DEFAULT, &behavior_sensor_rotate_key_press_driver_api);
+        CONFIG_KERNEL_INIT_PRIORITY_DEFAULT, &behavior_sensor_rotate_key_press_api);
 
 DT_INST_FOREACH_STATUS_OKAY(KP_INST)

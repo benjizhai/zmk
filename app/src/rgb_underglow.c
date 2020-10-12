@@ -30,18 +30,18 @@ enum rgb_underglow_effect {
 };
 
 struct led_hsb {
-    u16_t h;
-    u8_t s;
-    u8_t b;
+    uint16_t h;
+    uint8_t s;
+    uint8_t b;
 };
 
 struct rgb_underglow_state {
-    u16_t hue;
-    u8_t saturation;
-    u8_t brightness;
-    u8_t animation_speed;
-    u8_t current_effect;
-    u16_t animation_step;
+    uint16_t hue;
+    uint8_t saturation;
+    uint8_t brightness;
+    uint8_t animation_speed;
+    uint8_t current_effect;
+    uint16_t animation_step;
     bool on;
 };
 
@@ -54,7 +54,7 @@ struct led_rgb pixels[STRIP_NUM_PIXELS];
 static struct led_rgb hsb_to_rgb(struct led_hsb hsb) {
     double r, g, b;
 
-    u8_t i = hsb.h / 60;
+    uint8_t i = hsb.h / 60;
     double v = hsb.b / 100.0;
     double s = hsb.s / 100.0;
     double f = hsb.h / 360.0 * 6 - i;

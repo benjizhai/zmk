@@ -9,4 +9,4 @@
 #include <zmk/keys.h>
 #include <zmk/hid.h>
 
-int zmk_endpoints_send_report(u8_t usage_report);
+int zmk_endpoints_send_report(uint8_t usage_report);

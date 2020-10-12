@@ -11,14 +11,14 @@
 
 struct keycode_state_changed {
     struct zmk_event_header header;
-    u8_t usage_page;
-    u32_t keycode;
+    uint8_t usage_page;
+    uint32_t keycode;
     bool state;
 };
 
 ZMK_EVENT_DECLARE(keycode_state_changed);
 
-inline struct keycode_state_changed *create_keycode_state_changed(u8_t usage_page, u32_t keycode,
+inline struct keycode_state_changed *create_keycode_state_changed(uint8_t usage_page, uint32_t keycode,
                                                                   bool state) {
     struct keycode_state_changed *ev = new_keycode_state_changed();
     ev->usage_page = usage_page;

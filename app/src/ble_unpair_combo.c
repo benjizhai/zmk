@@ -18,12 +18,12 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/event-manager.h>
 #include <zmk/events/position-state-changed.h>
 
-static u8_t combo_state;
+static uint8_t combo_state;
 
-const u32_t key_positions[] = DT_INST_PROP(0, key_positions);
+const uint32_t key_positions[] = DT_INST_PROP(0, key_positions);
 #define KP_LEN DT_INST_PROP_LEN(0, key_positions)
 
-int index_for_key_position(u32_t kp) {
+int index_for_key_position(uint32_t kp) {
     for (int i = 0; i < KP_LEN; i++) {
         if (key_positions[i] == kp) {
             return i;

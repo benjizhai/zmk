@@ -36,8 +36,8 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/events/ble-active-profile-changed.h>
 
 static struct bt_conn *auth_passkey_entry_conn;
-static u8_t passkey_entries[6] = {0, 0, 0, 0, 0, 0};
-static u8_t passkey_digit = 0;
+static uint8_t passkey_entries[6] = {0, 0, 0, 0, 0, 0};
+static uint8_t passkey_digit = 0;
 
 #if IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_ROLE_CENTRAL)
 #define PROFILE_COUNT (CONFIG_BT_MAX_PAIRED - 1)
@@ -46,7 +46,7 @@ static u8_t passkey_digit = 0;
 #endif
 
 static struct zmk_ble_profile profiles[PROFILE_COUNT];
-static u8_t active_profile;
+static uint8_t active_profile;
 
 static const struct bt_data zmk_ble_ad[] = {
     BT_DATA_BYTES(BT_DATA_FLAGS, (BT_LE_AD_GENERAL | BT_LE_AD_NO_BREDR)),
@@ -79,7 +79,7 @@ static bool active_profile_is_open() {
     return !bt_addr_le_cmp(&profiles[active_profile].peer, BT_ADDR_LE_ANY);
 }
 
-void set_profile_address(u8_t index, const bt_addr_le_t *addr) {
+void set_profile_address(uint8_t index, const bt_addr_le_t *addr) {
     char setting_name[15];
     char addr_str[BT_ADDR_LE_STR_LEN];
 
@@ -127,7 +127,7 @@ int zmk_ble_clear_bonds() {
     return 0;
 };
 
-int zmk_ble_prof_select(u8_t index) {
+int zmk_ble_prof_select(uint8_t index) {
     LOG_DBG("profile %d", index);
     if (active_profile == index) {
         return 0;
@@ -172,7 +172,7 @@ static int ble_profiles_handle_set(const char *name, size_t len, settings_read_c
 
     if (settings_name_steq(name, "profiles", &next) && next) {
         char *endptr;
-        u8_t idx = strtoul(next, &endptr, 10);
+        uint8_t idx = strtoul(next, &endptr, 10);
         if (*endptr != '\0') {
             LOG_WRN("Invalid profile index: %s", log_strdup(next));
             return -EINVAL;
@@ -230,7 +230,7 @@ static int ble_profiles_handle_set(const char *name, size_t len, settings_read_c
 struct settings_handler profiles_handler = {.name = "ble", .h_set = ble_profiles_handle_set};
 #endif /* IS_ENABLED(CONFIG_SETTINGS) */
 
-static void connected(struct bt_conn *conn, u8_t err) {
+static void connected(struct bt_conn *conn, uint8_t err) {
     char addr[BT_ADDR_LE_STR_LEN];
     bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
 
@@ -252,7 +252,7 @@ static void connected(struct bt_conn *conn, u8_t err) {
     }
 }
 
-static void disconnected(struct bt_conn *conn, u8_t reason) {
+static void disconnected(struct bt_conn *conn, uint8_t reason) {
     char addr[BT_ADDR_LE_STR_LEN];
 
     bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
@@ -458,12 +458,12 @@ bool zmk_ble_handle_key_user(struct zmk_key_event *key_event) {
         return true;
     }
 
-    u32_t val = (key == NUM_0) ? 0 : (key - NUM_1 + 1);
+    uint32_t val = (key == NUM_0) ? 0 : (key - NUM_1 + 1);
 
     passkey_entries[passkey_digit++] = val;
 
     if (passkey_digit == 6) {
-        u32_t passkey = 0;
+        uint32_t passkey = 0;
         for (int i = 5; i >= 0; i--) {
             passkey = (passkey * 10) + val;
         }

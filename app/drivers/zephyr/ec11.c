@@ -19,18 +19,18 @@
 LOG_MODULE_REGISTER(EC11, CONFIG_SENSOR_LOG_LEVEL);
 
 static int ec11_get_ab_state(struct device *dev) {
-    struct ec11_data *drv_data = dev->driver_data;
-    const struct ec11_config *drv_cfg = dev->config_info;
+    struct ec11_data *drv_data = dev->data;
+    const struct ec11_config *drv_cfg = dev->config;
 
     return (gpio_pin_get(drv_data->a, drv_cfg->a_pin) << 1) |
            gpio_pin_get(drv_data->b, drv_cfg->b_pin);
 }
 
 static int ec11_sample_fetch(struct device *dev, enum sensor_channel chan) {
-    struct ec11_data *drv_data = dev->driver_data;
-    const struct ec11_config *drv_cfg = dev->config_info;
-    u8_t val;
-    s8_t delta;
+    struct ec11_data *drv_data = dev->data;
+    const struct ec11_config *drv_cfg = dev->config;
+    uint8_t val;
+    int8_t delta;
 
     __ASSERT_NO_MSG(chan == SENSOR_CHAN_ALL || chan == SENSOR_CHAN_ROTATION);
 
@@ -70,7 +70,7 @@ static int ec11_sample_fetch(struct device *dev, enum sensor_channel chan) {
 
 static int ec11_channel_get(struct device *dev, enum sensor_channel chan,
                             struct sensor_value *val) {
-    struct ec11_data *drv_data = dev->driver_data;
+    struct ec11_data *drv_data = dev->data;
 
     if (chan != SENSOR_CHAN_ROTATION) {
         return -ENOTSUP;
@@ -82,7 +82,7 @@ static int ec11_channel_get(struct device *dev, enum sensor_channel chan,
     return 0;
 }
 
-static const struct sensor_driver_api ec11_driver_api = {
+static const struct sensor_api ec11_api = {
 #ifdef CONFIG_EC11_TRIGGER
     .trigger_set = ec11_trigger_set,
 #endif
@@ -91,8 +91,8 @@ static const struct sensor_driver_api ec11_driver_api = {
 };
 
 int ec11_init(struct device *dev) {
-    struct ec11_data *drv_data = dev->driver_data;
-    const struct ec11_config *drv_cfg = dev->config_info;
+    struct ec11_data *drv_data = dev->data;
+    const struct ec11_config *drv_cfg = dev->config;
 
     LOG_DBG("A: %s %d B: %s %d resolution %d", drv_cfg->a_label, drv_cfg->a_pin, drv_cfg->b_label,
             drv_cfg->b_pin, drv_cfg->resolution);
@@ -143,6 +143,6 @@ int ec11_init(struct device *dev) {
         COND_CODE_0(DT_INST_NODE_HAS_PROP(n, resolution), (1), (DT_INST_PROP(n, resolution))),     \
     };                                                                                             \
     DEVICE_AND_API_INIT(ec11_##n, DT_INST_LABEL(n), ec11_init, &ec11_data_##n, &ec11_cfg_##n,      \
-                        POST_KERNEL, CONFIG_SENSOR_INIT_PRIORITY, &ec11_driver_api);
+                        POST_KERNEL, CONFIG_SENSOR_INIT_PRIORITY, &ec11_api);
 
 DT_INST_FOREACH_STATUS_OKAY(EC11_INST)

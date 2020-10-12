@@ -18,8 +18,8 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 struct ext_power_generic_config {
     const char *label;
-    const u8_t pin;
-    const u8_t flags;
+    const uint8_t pin;
+    const uint8_t flags;
 };
 
 struct ext_power_generic_data {
@@ -28,8 +28,8 @@ struct ext_power_generic_data {
 };
 
 static int ext_power_generic_enable(struct device *dev) {
-    struct ext_power_generic_data *data = dev->driver_data;
-    const struct ext_power_generic_config *config = dev->config_info;
+    struct ext_power_generic_data *data = dev->data;
+    const struct ext_power_generic_config *config = dev->config;
 
     if (gpio_pin_set(data->gpio, config->pin, 1)) {
         LOG_WRN("Failed to set ext-power control pin");
@@ -40,8 +40,8 @@ static int ext_power_generic_enable(struct device *dev) {
 }
 
 static int ext_power_generic_disable(struct device *dev) {
-    struct ext_power_generic_data *data = dev->driver_data;
-    const struct ext_power_generic_config *config = dev->config_info;
+    struct ext_power_generic_data *data = dev->data;
+    const struct ext_power_generic_config *config = dev->config;
 
     if (gpio_pin_set(data->gpio, config->pin, 0)) {
         LOG_WRN("Failed to clear ext-power control pin");
@@ -52,13 +52,13 @@ static int ext_power_generic_disable(struct device *dev) {
 }
 
 static int ext_power_generic_get(struct device *dev) {
-    struct ext_power_generic_data *data = dev->driver_data;
+    struct ext_power_generic_data *data = dev->data;
     return data->status;
 }
 
 static int ext_power_generic_init(struct device *dev) {
-    struct ext_power_generic_data *data = dev->driver_data;
-    const struct ext_power_generic_config *config = dev->config_info;
+    struct ext_power_generic_data *data = dev->data;
+    const struct ext_power_generic_config *config = dev->config;
 
     data->gpio = device_get_binding(config->label);
     if (data->gpio == NULL) {

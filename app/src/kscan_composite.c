@@ -17,8 +17,8 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 struct kscan_composite_child_config {
     char *label;
-    u8_t row_offset;
-    u8_t column_offset;
+    uint8_t row_offset;
+    uint8_t column_offset;
 };
 
 #define CHILD_CONFIG(inst)                                                                         \
@@ -55,11 +55,11 @@ static int kscan_composite_disable_callback(struct device *dev) {
     return 0;
 }
 
-static void kscan_composite_child_callback(struct device *child_dev, u32_t row, u32_t column,
+static void kscan_composite_child_callback(struct device *child_dev, uint32_t row, uint32_t column,
                                            bool pressed) {
     // TODO: Ideally we can get this passed into our callback!
     struct device *dev = device_get_binding(DT_INST_LABEL(0));
-    struct kscan_composite_data *data = dev->driver_data;
+    struct kscan_composite_data *data = dev->data;
 
     for (int i = 0; i < ARRAY_SIZE(kscan_composite_children); i++) {
         const struct kscan_composite_child_config *cfg = &kscan_composite_children[i];
@@ -73,7 +73,7 @@ static void kscan_composite_child_callback(struct device *child_dev, u32_t row, 
 }
 
 static int kscan_composite_configure(struct device *dev, kscan_callback_t callback) {
-    struct kscan_composite_data *data = dev->driver_data;
+    struct kscan_composite_data *data = dev->data;
 
     if (!callback) {
         return -EINVAL;
@@ -91,14 +91,14 @@ static int kscan_composite_configure(struct device *dev, kscan_callback_t callba
 }
 
 static int kscan_composite_init(struct device *dev) {
-    struct kscan_composite_data *data = dev->driver_data;
+    struct kscan_composite_data *data = dev->data;
 
     data->dev = dev;
 
     return 0;
 }
 
-static const struct kscan_driver_api mock_driver_api = {
+static const struct kscan_api mock_api = {
     .config = kscan_composite_configure,
     .enable_callback = kscan_composite_enable_callback,
     .disable_callback = kscan_composite_disable_callback,
@@ -110,4 +110,4 @@ static struct kscan_composite_data kscan_composite_data;
 
 DEVICE_AND_API_INIT(kscan_composite, DT_INST_LABEL(0), kscan_composite_init, &kscan_composite_data,
                     &kscan_composite_config, APPLICATION, CONFIG_KERNEL_INIT_PRIORITY_DEFAULT,
-                    &mock_driver_api);
+                    &mock_api);
